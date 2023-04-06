@@ -1,10 +1,9 @@
-﻿:author: xxx
+﻿:author: Fabian Haas
 :listing-caption: Listing
 :source-highlighter: rouge
 // path to the directory containing the source code
 :src: ../src
 // path to the directory containing the images
-:imagesdir: ./images
 :toc:
 :numbered:
 :toclevels: 3
@@ -15,10 +14,164 @@
 // front-cover-image can be used to include the Exercise specification, for example:
 //:front-cover-image: ./Exercise1.pdf
 
-= Title / Exercise XX
+= Exercise 2: Microservice in Go
 
-== Lösungsidee
+== After Tutorial
 
-== Code
+After finishing the tutorial, my understanding of the project is the following:
 
-== Tests
+=== model.go
+
+The `model.go` contains the definition of our `Product` model and provides basic `CRUD` operations for storing, updating and deleting products from an `SQL` database.
+
+.model.go
+[source,go]
+----
+include::{src}/model.go[]
+----
+
+=== app.go
+
+The `app.go` file contains the actual logic of the microservice.
+The `App` struct uses a `mux.Router` from `gorilla/mux` to route traffic to the endpoints defined by `ìnitializeRoutes()`.
+
+The defined routes use the `CRUD` operations defined on the `Prodcut` with the `postgres` database connection established in `Initialize()` and returns the result as Json according to `REST` standards.
+
+.app.go
+[source,go]
+----
+include::{src}/app.go[]
+----
+
+=== main.go
+
+The `main.go` file acts as the entry point for our go microservice.
+It reads the required parameters for the `App` from the environment variables and initializes the microservice with them and makes sure the microservice is available on port `8010`.
+
+.main.go
+[source,go]
+----
+include::{src}/main_test.go[]
+----
+
+=== main_test.go
+
+As with every service, we naturally need tests to ensure our service is working as expected.
+The `main_test.go` file contains simple tests for the endpoints provided by the service.
+
+.main_test.go
+[source,go]
+----
+include::{src}/main_test.go[]
+----
+
+== Add-ons
+
+For the exercise, I added 2 additional features to the tutorial.
+A `health` endpoint that tells us whether the service is up and running healthy and JWT authentication for the creation, update and delete endpoints.
+
+=== Health
+
+The `health` endpoint is really simple and returns information on the status of the microservice.
+Since our microservice is so simple, it just checks whether it can ping the database and return answers that fit the Health Mricoprofile specification.
+
+.app.go
+[source,go]
+----
+...
+include::{src}/app.go[lines=159..187]
+...
+include::{src}/app.go[lines=292]
+...
+----
+
+The Microprofile specification says the response should follow the following schema:
+
+[source,json]
+----
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "type": "object",
+ "properties": {
+   "status": {
+     "type": "string"
+   },
+   "checks": {
+     "type": "array",
+     "items": {
+       "type": "object",
+       "properties": {
+         "name": {
+           "type": "string"
+         },
+         "status": {
+           "type": "string"
+         },
+         "data": {
+           "type": "object",
+           "patternProperties": {
+             "[a-zA-Z_]*": {
+               "type": [
+                 "string",
+                 "boolean",
+                 "number"
+               ]
+             }
+           },
+           "additionalProperties": false
+         }
+       },
+       "required": [
+         "name",
+         "status"
+       ]
+     }
+   }
+ },
+ "required": [
+   "status",
+   "checks"
+ ],
+ "additionalProperties": false
+}
+----
+
+More info on the specification can be found https://download.eclipse.org/microprofile/microprofile-health-3.0/microprofile-health-spec-3.0.html[here].
+
+==== JWT Authentication
+
+To secure the endpoints created in the tutorial I added JWT Authentication as a feature.
+For the authentication, the `/token` is provided so user can request a JWT Token.
+To make it more interesting, the token can have different roles that define for which endpoint the permissions suffice. I used a middleware (`jwtAuthentication`) to intercept the endpoints that are should be guarded with Authentication. If no token or a token with invalid permissions is present in the `Authorization` header, the request will be denied by `401 Unauthorized`.
+
+I did not implement users, so I used hardcoded credentials to be able to request 2 different kinds of JWT Tokens, a Admin and a Moderator token.
+The admin token can be used for all endpoints. The Moderator token will only work for creating and updating.
+
+Which roles are needed for an endpoint is handled in `initializeRoutes()`.
+For generating JWT tokens, I used a symmetric approach that should not be used in production that uses a secret passed to the application. For generating, parsing and validating JWT Tokens I used the `github.com/golang-jwt/jwt/v5` library.
+
+.app.go
+[source,go]
+----
+...
+include::{src}/app.go[lines=189..]
+----
+
+Of course, I also added and updated the tests accordingly. (take a look at the previous sections)
+
+=== Setup
+
+For running this application you need to have docker installed and fire up a postgres database with this command:
+
+ docker run -it -p 5432:5432 -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres
+
+Following this, you should set up the following environment variables:
+
+ export APP_JWT_SECRET=postgres
+ export APP_DB_USERNAME=postgres
+ export APP_DB_PASSWORD=
+ export APP_DB_NAME=postgres
+
+The test can be run via:
+
+ go test -v

@@ -160,7 +160,16 @@ func (a *App) deleteProduct(w http.ResponseWriter, r *http.Request) {
 func (a *App) healthCheck(w http.ResponseWriter, r *http.Request) {
 	dbErr := a.DB.Ping()
 	if dbErr != nil {
-		respondWithError(w, http.StatusServiceUnavailable, "Database not available")
+		health := map[string]interface{}{
+			"status": "DOWN",
+			"checks": []map[string]interface{}{
+				{
+					"name":   "database",
+					"status": "DOWN",
+				},
+			},
+		}
+		respondWithJSON(w, http.StatusServiceUnavailable, health)
 		return
 	}
 
