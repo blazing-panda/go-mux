@@ -88,7 +88,7 @@ image::doc/images/image-2023-04-22-18-14-40-479.png[]
 
 This should display the status of the workflow
 
-![Go workflow](https://github.com/blazing-panda/go-mux/actions/workflows/go.yml/badge.svg)
+[![Go](https://github.com/blazing-panda/go-mux/actions/workflows/go.yml/badge.svg)](https://github.com/blazing-panda/go-mux/actions/workflows/go.yml)
 
 === SonarCloud action
 
