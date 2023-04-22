@@ -1,3 +1,9 @@
+[![Go](https://github.com/blazing-panda/go-mux/actions/workflows/go.yml/badge.svg)](https://github.com/blazing-panda/go-mux/actions/workflows/go.yml)
+
+[![SonarCloud analysis](https://github.com/blazing-panda/go-mux/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/blazing-panda/go-mux/actions/workflows/sonarcloud.yml)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=blazing-panda_go-mux&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=blazing-panda_go-mux)
+
 # Go-mux
 
 ## Exercise 3: CI workflow
@@ -155,7 +161,6 @@ jobs:
 ![](doc/images/sonarcloud.png)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=blazing-panda_go-mux&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=blazing-panda_go-mux)
-
 
 ## Setup
 
