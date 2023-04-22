@@ -66,6 +66,7 @@ jobs:
         go test -v
 ```
 
+.successfull go action
 image::doc/images/image-2023-04-22-18-14-40-479.png[]
 
 This should display the status of the workflow
@@ -74,7 +75,7 @@ This should display the status of the workflow
 
 ### SonarCloud action
 
-I used the sonarcloud template to create my workflow for the sonarcloud analysis.
+I used the sonarcloud template to create my workflow for the sonarcloud analysis and followed all of the steps mentioned in the template.
 
 .sonarcloud.yml
 ```yaml
@@ -147,6 +148,15 @@ jobs:
             # Adds more detail to both client and server-side analysis logs, activating DEBUG mode for the scanner, and adding client-side environment variables and system properties to the server-side log of analysis report processing.
             #-Dsonar.verbose= # optional, default is false
 ```
+
+.sonarcloud action
+image::doc/images/sonarcloud-action.png[]
+
+[![SonarCloud analysis](https://github.com/blazing-panda/go-mux/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/blazing-panda/go-mux/actions/workflows/sonarcloud.yml)
+
+.sonarcloud.png
+image::doc/images/sonarcloud.png[]
+
 
 ## Setup
 
