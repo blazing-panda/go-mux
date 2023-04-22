@@ -1,24 +1,8 @@
-:author: Fabian Haas
-:listing-caption: Listing
-:source-highlighter: rouge
-// path to the directory containing the source code
-:src: ../src
-// path to the directory containing the images
-:toc:
-:numbered:
-:toclevels: 3
-:rouge-style: github
-:pdf-themesdir: ./doc/theme
-:pdf-theme: basic
-:pdf-fontsdir: ./doc/fonts
-// front-cover-image can be used to include the Exercise specification, for example:
-//:front-cover-image: ./Exercise1.pdf
+# Go-mux
 
-= Go-mux
+## Exercise 3: CI workflow
 
-== Exercise 3: CI workflow
-
-=== Go action
+### Go action
 
 I used Github actions to create a CI workflow for the project.
 The workflow to build and run the tests is defined in `.github/workflows/go.yml` and runs on every push to the repository.
@@ -27,8 +11,7 @@ The workflow first sets up the postgres database needed for the tests as a servi
 It uses `actions/checkout@v3` to checkout the repository and `actions/setup-go@v4` to setup the required go environment, after which it installs the dependencies with `go mod download`. Once the dependencies are installed, the project is build with `go build` and the tests are run with `go test`.
 
 .go.yml
-[source,yaml]
-----
+```yaml
 # This workflow will build a golang project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
 
@@ -81,8 +64,7 @@ jobs:
       run: |
         cd src
         go test -v
-
-----
+```
 
 image::doc/images/image-2023-04-22-18-14-40-479.png[]
 
@@ -90,13 +72,12 @@ This should display the status of the workflow
 
 [![Go](https://github.com/blazing-panda/go-mux/actions/workflows/go.yml/badge.svg)](https://github.com/blazing-panda/go-mux/actions/workflows/go.yml)
 
-=== SonarCloud action
+### SonarCloud action
 
 I used the sonarcloud template to create my workflow for the sonarcloud analysis.
 
 .sonarcloud.yml
-[source,yaml]
-----
+```yaml
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
@@ -165,9 +146,9 @@ jobs:
             #-Dsonar.tests= # optional. For more info about Code Coverage, please refer to https://docs.sonarcloud.io/enriching/test-coverage/overview/
             # Adds more detail to both client and server-side analysis logs, activating DEBUG mode for the scanner, and adding client-side environment variables and system properties to the server-side log of analysis report processing.
             #-Dsonar.verbose= # optional, default is false
-----
+```
 
-== Setup
+## Setup
 
 For running this application you need to have docker installed and fire up a postgres database with this command:
 
