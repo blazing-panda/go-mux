@@ -66,8 +66,7 @@ jobs:
         go test -v
 ```
 
-.successfull go action
-image::doc/images/image-2023-04-22-18-14-40-479.png[]
+![](doc/images/image-2023-04-22-18-14-40-479.png)
 
 This should display the status of the workflow
 
@@ -75,7 +74,7 @@ This should display the status of the workflow
 
 ### SonarCloud action
 
-I used the sonarcloud template to create my workflow for the sonarcloud analysis and followed all of the steps mentioned in the template.
+I used the sonarcloud template to create my workflow for the sonarcloud analysis and followed all of the steps mentioned in the template. I also needed to set up a New Code definition in order for the quality gate to work.
 
 .sonarcloud.yml
 ```yaml
@@ -149,13 +148,13 @@ jobs:
             #-Dsonar.verbose= # optional, default is false
 ```
 
-.sonarcloud action
-image::doc/images/sonarcloud-action.png[]
+![](doc/images/sonarcloud-action.png)
 
 [![SonarCloud analysis](https://github.com/blazing-panda/go-mux/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/blazing-panda/go-mux/actions/workflows/sonarcloud.yml)
 
-.sonarcloud.png
-image::doc/images/sonarcloud.png[]
+![](doc/images/sonarcloud.png)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=blazing-panda_go-mux&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=blazing-panda_go-mux)
 
 
 ## Setup
